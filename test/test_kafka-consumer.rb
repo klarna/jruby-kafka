@@ -15,7 +15,7 @@ class TestKafkaConsumer < Test::Unit::TestCase
     }
     send_test_messages topics[0]
     queue = SizedQueue.new(20)
-    consumer = Kafka::KafkaConsumer.new(options)
+    consumer = JrubyKafka::KafkaConsumer.new(options)
     consumer.subscribe topics
     runner_thread = Thread.new { kafka_consumer_test_blk consumer, queue}
     begin

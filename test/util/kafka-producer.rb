@@ -7,13 +7,13 @@ KAFKA_PRODUCER_OPTIONS = {
 }
 
 def send_kafka_producer_msg(topic = 'test')
-  producer = Kafka::KafkaProducer.new(KAFKA_PRODUCER_OPTIONS)
+  producer = JrubyKafka::KafkaProducer.new(KAFKA_PRODUCER_OPTIONS)
   producer.connect
   producer.send_msg(topic,nil, nil, 'test message')
 end
 
 def send_kafka_producer_msg_cb(&block)
-  producer = Kafka::KafkaProducer.new(KAFKA_PRODUCER_OPTIONS)
+  producer = JrubyKafka::KafkaProducer.new(KAFKA_PRODUCER_OPTIONS)
   producer.connect
   producer.send_msg('test',nil, nil, 'test message', &block)
 end

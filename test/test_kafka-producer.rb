@@ -43,7 +43,7 @@ class TestKafkaProducer < Test::Unit::TestCase
     topic = 'get_sent_msg'
     send_kafka_producer_msg topic
     queue = SizedQueue.new(20)
-    consumer = Kafka::Consumer.new(consumer_options({:topic => topic}))
+    consumer = JrubyKafka::Consumer.new(consumer_options({:topic => topic}))
     streams = consumer.message_streams
     streams.each_with_index do |stream|
       Thread.new { consumer_test_blk stream, queue}

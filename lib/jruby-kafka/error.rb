@@ -1,6 +1,6 @@
 require 'jruby-kafka/namespace'
 
-class KafkaError < StandardError
+class JrubyKafkaError < StandardError
   attr_reader :object
 
   def initialize(object)

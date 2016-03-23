@@ -1,7 +1,7 @@
 require 'java'
 require 'jruby-kafka/namespace'
 
-class Kafka::Utility
+class JrubyKafka::Utility
   def self.java_properties(properties)
     java_properties = java.util.Properties.new
     properties.each do |k,v|
