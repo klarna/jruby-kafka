@@ -6,7 +6,7 @@ PRODUCER_OPTIONS = {
 }
 
 def produce_to_different_topics(topic_prefix = '')
-  producer = Kafka::Producer.new(PRODUCER_OPTIONS)
+  producer = JrubyKafka::Producer.new(PRODUCER_OPTIONS)
   producer.connect
   producer.send_msg(topic_prefix + 'apple', nil,      'apple message')
   producer.send_msg(topic_prefix + 'cabin', nil,      'cabin message')
@@ -14,13 +14,13 @@ def produce_to_different_topics(topic_prefix = '')
 end
 
 def send_producer_msg(topic = 'test')
-  producer = Kafka::Producer.new(PRODUCER_OPTIONS)
+  producer = JrubyKafka::Producer.new(PRODUCER_OPTIONS)
   producer.connect
   producer.send_msg(topic, nil, 'test message')
 end
 
 def send_producer_msg_deprecated(topic = 'test')
-  producer = Kafka::Producer.new(PRODUCER_OPTIONS)
+  producer = JrubyKafka::Producer.new(PRODUCER_OPTIONS)
   producer.connect
   producer.sendMsg(topic, nil, 'test message')
 end
@@ -28,7 +28,7 @@ end
 def send_producer_msg_compressed(compression_codec='none', topic='test')
   options = PRODUCER_OPTIONS.clone
   options[:compression_codec] = compression_codec
-  producer = Kafka::Producer.new(options)
+  producer = JrubyKafka::Producer.new(options)
   producer.connect
   producer.send_msg(topic,nil, "codec #{compression_codec} test message")
 end

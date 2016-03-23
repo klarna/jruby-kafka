@@ -2,7 +2,7 @@ require 'java'
 require 'jruby-kafka/namespace'
 require 'jruby-kafka/utility'
 
-class Kafka::Consumer
+class JrubyKafka::Consumer
   java_import 'org.I0Itec.zkclient.exception.ZkException'
   java_import 'kafka.consumer.ConsumerConfig'
   java_import 'kafka.consumer.Consumer'
@@ -53,7 +53,7 @@ class Kafka::Consumer
   #
   # @return void
   def connect
-    @consumer = Consumer.createJavaConsumerConnector ConsumerConfig.new Kafka::Utility.java_properties @properties
+    @consumer = Consumer.createJavaConsumerConnector ConsumerConfig.new JrubyKafka::Utility.java_properties @properties
   end
 
   # Start fetching messages.
@@ -72,7 +72,7 @@ class Kafka::Consumer
         ZkUtils.maybeDeletePath(@properties[:zookeeper_connect], "/consumers/#{@properties[:group_id]}")
       end
     rescue ZkException => e
-      raise KafkaError.new(e), "Got ZkException: #{e}"
+      raise JrubyKafkaError.new(e), "Got ZkException: #{e}"
     end
     key_decoder_i = Java::JavaClass.for_name(@key_decoder).
       constructor('kafka.utils.VerifiableProperties').new_instance nil
@@ -127,7 +127,7 @@ class Kafka::Consumer
 
     if options[:reset_beginning]
       unless options[:auto_offset_reset] && options[:auto_offset_reset] == 'smallest'
-        raise KafkaError.new('reset_beginning => from-beginning must be used with auto_offset_reset => smallest')
+        raise JrubyKafkaError.new('reset_beginning => from-beginning must be used with auto_offset_reset => smallest')
       end
     end
   end

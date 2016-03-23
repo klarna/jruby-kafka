@@ -3,7 +3,7 @@ require 'jruby-kafka/namespace'
 require 'concurrent'
 require 'jruby-kafka/utility'
 
-class Kafka::KafkaConsumer < Java::org.apache.kafka.clients.consumer.KafkaConsumer
+class JrubyKafka::KafkaConsumer < Java::org.apache.kafka.clients.consumer.KafkaConsumer
 
   REQUIRED = [
     :bootstrap_servers, :key_deserializer, :value_deserializer
@@ -24,10 +24,10 @@ class Kafka::KafkaConsumer < Java::org.apache.kafka.clients.consumer.KafkaConsum
   # https://kafka.apache.org/090/javadoc/org/apache/kafka/clients/consumer/ConsumerConfig.html.
   #
   def initialize(config={})
-    Kafka::Utility.validate_arguments REQUIRED, config
+    JrubyKafka::Utility.validate_arguments REQUIRED, config
     @properties      =  config.clone
     @stop_called     =  Concurrent::AtomicBoolean.new(false)
-    super Kafka::Utility.java_properties @properties
+    super JrubyKafka::Utility.java_properties @properties
   end
 
   attr_reader :properties
