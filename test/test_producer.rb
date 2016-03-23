@@ -8,7 +8,7 @@ class TestKafka < Test::Unit::TestCase
     topic = 'test_run'
     send_test_messages topic
     queue = SizedQueue.new(20)
-    consumer = Kafka::Consumer.new(consumer_options({:topic => topic }))
+    consumer = JrubyKafka::Consumer.new(consumer_options({:topic => topic }))
     streams = consumer.message_streams
     streams.each_with_index do |stream|
       Thread.new { consumer_test_blk stream, queue}
@@ -40,7 +40,7 @@ class TestKafka < Test::Unit::TestCase
       :topic => topic,
       :reset_beginning => 'from-beginning'
     }
-    consumer = Kafka::Consumer.new(consumer_options(options))
+    consumer = JrubyKafka::Consumer.new(consumer_options(options))
     streams = consumer.message_streams
     streams.each_with_index do |stream|
       Thread.new { consumer_test_blk stream, queue}
@@ -74,7 +74,7 @@ class TestKafka < Test::Unit::TestCase
       :group_id => 'topics',
       :include_topics => topic_prefix + 'ca.*',
     }
-    consumer = Kafka::Consumer.new(filter_consumer_options(options))
+    consumer = JrubyKafka::Consumer.new(filter_consumer_options(options))
     streams = consumer.message_streams
     streams.each_with_index do |stream|
       Thread.new { consumer_test_blk stream, queue}
@@ -106,7 +106,7 @@ class TestKafka < Test::Unit::TestCase
       :group_id => 'topics',
       :exclude_topics => topic_prefix + 'ca.*',
     }
-    consumer = Kafka::Consumer.new(filter_consumer_options(options))
+    consumer = JrubyKafka::Consumer.new(filter_consumer_options(options))
     streams = consumer.message_streams
     streams.each_with_index do |stream|
       Thread.new { consumer_test_blk stream, queue}

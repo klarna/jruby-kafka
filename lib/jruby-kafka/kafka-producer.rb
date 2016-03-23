@@ -3,7 +3,7 @@ require 'jruby-kafka/error'
 require 'jruby-kafka/utility'
 
 # noinspection JRubyStringImportInspection
-class Kafka::KafkaProducer
+class JrubyKafka::KafkaProducer
   java_import 'org.apache.kafka.clients.producer.ProducerRecord'
   java_import 'org.apache.kafka.clients.producer.Callback'
   KAFKA_PRODUCER = Java::org.apache.kafka.clients.producer.KafkaProducer
@@ -27,13 +27,13 @@ class Kafka::KafkaProducer
   attr_reader :producer, :send_method, :send_cb_method, :options
 
   def initialize(opts = {})
-    Kafka::Utility.validate_arguments REQUIRED, opts
+    JrubyKafka::Utility.validate_arguments REQUIRED, opts
     @options = opts
     @send_method = @send_cb_method = proc { throw StandardError.new 'Producer is not connected' }
   end
 
   def connect
-    @producer = KAFKA_PRODUCER.new(Kafka::Utility.java_properties @options)
+    @producer = KAFKA_PRODUCER.new(JrubyKafka::Utility.java_properties @options)
     @send_method = producer.java_method :send, [ProducerRecord]
     @send_cb_method = producer.java_method :send, [ProducerRecord, Callback.java_class]
   end

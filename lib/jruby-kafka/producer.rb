@@ -4,7 +4,7 @@ require 'jruby-kafka/error'
 require 'jruby-kafka/utility'
 
 # noinspection JRubyStringImportInspection
-class Kafka::Producer
+class JrubyKafka::Producer
   extend Gem::Deprecate
   java_import 'kafka.producer.ProducerConfig'
   java_import 'kafka.producer.KeyedMessage'
@@ -31,12 +31,12 @@ class Kafka::Producer
     if options[:compressed_topics].is_a? Array
       options[:compressed_topics] = options[:compressed_topics].join(',')
     end
-    Kafka::Utility.validate_arguments REQUIRED, options
+    JrubyKafka::Utility.validate_arguments REQUIRED, options
     @send_method = proc { throw StandardError.new 'Producer is not connected' }
   end
 
   def connect
-    @producer = KAFKA_PRODUCER.new(ProducerConfig.new Kafka::Utility.java_properties @options)
+    @producer = KAFKA_PRODUCER.new(ProducerConfig.new JrubyKafka::Utility.java_properties @options)
     @send_method = producer.java_method :send, [KeyedMessage]
   end
 
